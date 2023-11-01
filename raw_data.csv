@@ -1,4 +1,3 @@
-pl_name,discoverymethod,disc_year,disc_facility,pl_orbper,pl_orbpererr1,pl_orbpererr2,pl_orbperlim,pl_bmasse,pl_bmasseerr1,pl_bmasseerr2,pl_bmasselim,sy_dist,sy_disterr1,sy_disterr2
 11 Com b,Radial Velocity,2007,Xinglong Station,,,,,5434.7,540.3,-413.2,0,93.1846,1.9238,-1.9238
 11 Com b,Radial Velocity,2007,Xinglong Station,326.03,0.32,-0.32,0,6165.6,476.7,-476.7,0,93.1846,1.9238,-1.9238
 11 Com b,Radial Velocity,2007,Xinglong Station,323.21,0.06,-0.05,0,4914.89849,39.09289,-39.72855,0,93.1846,1.9238,-1.9238

@@ -34,21 +34,72 @@ function dbSelect(query, params) {
     return p;
 }
 
-app.get('/:filt/:val', (req, res) => {
-    let filter = decodeURIComponent(req.params.filt.toLowerCase());
-    let value = decodeURIComponent(req.params.val.toUpperCase());
+app.get('/pl_name/:name', (req, res) => { // Planet Name
+    const sql = 'SELECT * FROM Planets ORDER BY pl_id ASC';
 
-    let p1 = dbSelect('SELECT * FROM Planets WHERE UPPER(' + filter + ') = ?', [value]);
-    let p2 = fs.promises.readFile(path.join(template, 'temp.html'), 'utf-8');
-
-    Promise.all([p1, p2]).then((results) => {
-        let response = results[1].replace('$$FILTER$$', value).replace('$$FILTER$$', value);
-        try {
-            response = response.replace('$$NEXT$$', parseInt(value)+1);
-            response = response.replace('$$PREV$$', parseInt(value)-1);
-        } catch {
+    db.all(sql, [], (err, rows) => {
+        if (err) {
+            throw err;
         }
+    });
+    let name = decodeURIComponent(req.params.name.toUpperCase());
+    let p1 = dbSelect('SELECT * FROM Planets WHERE UPPER(pl_name) = ?', [name]);
+    let p2 = fs.promises.readFile(path.join(template, 'temp.html'), 'utf-8');
+    Promise.all([p1, p2]).then((results) => {
+        let current = results[0][0].pl_name;
+        let response = results[1].replace('$$CURRENT$$', current).replace('$$CURRENT$$', current);
 
+        let id = results[0][0].pl_id;
+        console.log(id);
+        //let p3 = dbSelect('SELECT pl_id FROM Planets WHERE pl_name = ' +  + 'AND pl_id > current_id ORDER BY pl_id ASC LIMIT 1;')
+        Promise.all([p3, p4]).then((links) => {
+            try {
+                next = links[0][0].pl_name;
+            } catch {
+                next = current;
+            }
+            try {
+                prev = links[1][0].pl_name;
+            } catch {
+                prev = current;
+            }
+            response = response.replace('$$NEXT$$', next);
+            response = response.replace('$$PREV$$', prev);
+            let table_body = '';
+            results[0].forEach((planet) => {
+                let table_row = '<tr>';
+    
+                table_row += '<td>' + planet.pl_name + '</td>\n';
+                table_row += '<td>' + planet.discoverymethod + '</td>\n';
+                table_row += '<td>' + planet.disc_year + '</td>\n';
+                table_row += '<td>' + planet.disc_facility + '</td>\n';
+                table_row += '<td>' + planet.pl_orbper + '</td>\n';
+                table_row += '<td>' + planet.pl_bmasse + '</td>\n';
+                table_row += '<td>' + planet.sy_dist + '</td>\n';
+    
+                table_row += '</tr>\n';
+                table_body += table_row;
+            });
+            response = response.replace('$$TABLE_BODY$$', table_body);
+        res.status(200).type('html').send(response);
+        })
+    }).catch((error) => {
+        res.status(404).type('txt').send('File not found');
+    });
+});
+
+app.get('/disc_year/:year', (req, res) => { // Discovery Year
+    let year = decodeURIComponent(req.params.year);
+    let p1 = dbSelect('SELECT * FROM Planets WHERE disc_year = ?', [year]);
+    let p2 = fs.promises.readFile(path.join(template, 'temp.html'), 'utf-8');
+    Promise.all([p1, p2]).then((results) => {
+        let current = results[0][0].pl_name;
+        let response = results[1].replace('$$CURRENT$$', current).replace('$$CURRENT$$', current);
+
+        let next = parseInt(current)+1;
+        let prev = parseInt(current)-1;
+        response = response.replace('$$NEXT$$', next);
+        response = response.replace('$$PREV$$', prev);
         let table_body = '';
         results[0].forEach((planet) => {
             let table_row = '<tr>';
