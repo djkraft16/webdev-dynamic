@@ -86,7 +86,7 @@ app.get('/pl_name/:name', (req, res) => { // Planet Name
         res.status(200).type('html').send(response);
         })
     }).catch((error) => {
-        res.status(404).type('txt').send('File not found');
+        res.status(404).type('txt').send('No data found for planet ' + name);
     });
 });
 
@@ -128,7 +128,7 @@ app.get('/disc_year/:year', (req, res) => { // Discovery Year
         response = response.replace('$$TABLE_BODY$$', table_body);
         res.status(200).type('html').send(response);
     }).catch((error) => {
-        res.status(404).type('txt').send('File not found');
+        res.status(404).type('txt').send('No data found for year ' + year);
     });
 });
 

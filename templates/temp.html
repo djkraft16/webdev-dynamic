@@ -6,6 +6,7 @@
 	<title>Exoplanets | $$CURRENT$$</title>
 	<link rel="stylesheet" href="../css/style.css"/>
 	<link rel="stylesheet" href="../css/foundation.css"/>
+	<link rel="icon" href="../public/favicon.ico" type="image/x-icon">
 </head>
 <body>
 	<div class="off-canvas-wrapper">
@@ -14,15 +15,14 @@
             <!-- main content within a `grid-container` -->
             <div class="grid-container full-width full-height">
                 <!-- `grid-x` represents a row -->
-                <div class="grid-x grid-padding-x full-width" style="position: fixed; margin-top: -4vh;">
-					<div class="cell small-6 large-6 align-center-left"><a href="$$PREV$$">Previous</a></div>
-                    <div class="cell small-6 large-6 align-center-right"><a href="$$NEXT$$">Next</a></div>
-				</div>
 			</div>
 			<div class="grid-container full-width full-height">
-				<div class="grid-x grid-padding-x full-width" style="margin-inline: -8vw; margin-top: 8vh;">
-					<h1>$$CURRENT$$</h1>
-					<br>
+				<div class="grid-x grid-padding-x full-width align-center">
+					<div class="cell small-3 large-3"><a href="$$PREV$$">Previous</a></div>
+					<div class="cell small-3 large-3"><h1 class="header">$$CURRENT$$</h1></div>
+                    <div class="cell small-3 large-3"><a href="$$NEXT$$">Next</a></div>
+					<div class="cell small-3 large-3"><a href=".." class="button" style='margin-right:16px'>Home Page</a></div>
+					<div class="cell small-12 large-12">
 					<table>
 						<thead>
 							<tr>
@@ -39,6 +39,7 @@
 							$$TABLE_BODY$$
 						</tbody>
 					</table>
+					</div>
 				</div>
 			</div>	
 		</div>

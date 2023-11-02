@@ -1,3 +1,69 @@
-h1 {
-    color: red;
+.home {
+    background-color: #0a192f;
+    display: flex;
+    border: 5pX solid #18212C;
+    background-image: url('https://cdn.wccftech.com/wp-content/uploads/2016/09/spacee.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat:repeat;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    margin: 0;
+    font-family: 'Arial', sans-serif;
+    color: #dbe2ef;
+}
+
+.button-container {
+    display: flex;
+    justify-content: space-between;
+    width: 50%;
+    margin-top: 20px;
+}
+
+.button {
+    background-color: #7B92A3;
+    color: #dbe2ef;
+    text-align: center;
+    border: 2pX solid black;
+    position: relative;
+    padding: 8px 10px;
+    border-radius: 	10px;
+    text-decoration: none;
+}
+
+.search-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 50px;
+}
+
+.search-bar {
+    width: 500%;
+    background-color: #BBB3B3;
+    padding: 10px;
+    border-radius: 5px;
+    border: 2pX solid black;
+    margin-bottom: 10px;
+}
+
+.search-button {
+    background-color: #6A7E97;
+    color: #dbe2ef;
+    border: 2pX solid black;
+    padding: 10px 20px;
+    border-radius: 5000000px;
+}
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(148, 148, 148, 0.15);
+}
+.header {
+    size: 4vw;
 }
