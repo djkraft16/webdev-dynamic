@@ -16,7 +16,7 @@ app.use(express.static(root));
 const db = new sqlite3.Database(path.join(__dirname, 'exoplanets.sqlite3'), sqlite3.OPEN_READONLY, (err) => {
     if(err) {
         console.log('Error connecting to database');
-    } else { 
+    } else {
         console.log('Successfully connected to database');
     }
 });
