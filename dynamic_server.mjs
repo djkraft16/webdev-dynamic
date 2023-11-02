@@ -50,8 +50,8 @@ app.get('/pl_name/:name', (req, res) => { // Planet Name
         let response = results[1].replace('$$CURRENT$$', current).replace('$$CURRENT$$', current);
 
         let id = results[0][0].pl_id;
-        let p3 = dbSelect('SELECT pl_id FROM Planets WHERE pl_name = ? AND pl_id > ? ORDER BY pl_id ASC LIMIT 1', [current, id]);
-        let p4 = dbSelect('SELECT pl_id FROM Planets WHERE pl_name = ? AND pl_id < ? ORDER BY pl_id DESC LIMIT 1', [current, id]);
+        let p3 = dbSelect('SELECT pl_id FROM Planets WHERE pl_name = ? AND pl_id > ? ORDER BY pl_id ASC LIMIT 3', [current, id]);
+        let p4 = dbSelect('SELECT pl_id FROM Planets WHERE pl_name = ? AND pl_id < ? ORDER BY pl_id DESC LIMIT 3', [current, id]);
         let next, prev;
         Promise.all([p3, p4]).then((links) => {
             console.log(links);
