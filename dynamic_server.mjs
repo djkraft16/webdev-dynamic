@@ -50,9 +50,11 @@ app.get('/pl_name/:name', (req, res) => { // Planet Name
         let response = results[1].replace('$$CURRENT$$', current).replace('$$CURRENT$$', current);
 
         let id = results[0][0].pl_id;
-        console.log(id);
-        //let p3 = dbSelect('SELECT pl_id FROM Planets WHERE pl_name = ' +  + 'AND pl_id > current_id ORDER BY pl_id ASC LIMIT 1;')
+        let p3 = dbSelect('SELECT pl_id FROM Planets WHERE pl_name = ? AND pl_id > ? ORDER BY pl_id ASC LIMIT 1', [current, id]);
+        let p4 = dbSelect('SELECT pl_id FROM Planets WHERE pl_name = ? AND pl_id < ? ORDER BY pl_id DESC LIMIT 1', [current, id]);
+        let next, prev;
         Promise.all([p3, p4]).then((links) => {
+            console.log(links);
             try {
                 next = links[0][0].pl_name;
             } catch {
@@ -93,13 +95,21 @@ app.get('/disc_year/:year', (req, res) => { // Discovery Year
     let p1 = dbSelect('SELECT * FROM Planets WHERE disc_year = ?', [year]);
     let p2 = fs.promises.readFile(path.join(template, 'temp.html'), 'utf-8');
     Promise.all([p1, p2]).then((results) => {
-        let current = results[0][0].pl_name;
+        let current = results[0][0].disc_year;
         let response = results[1].replace('$$CURRENT$$', current).replace('$$CURRENT$$', current);
 
         let next = parseInt(current)+1;
         let prev = parseInt(current)-1;
-        response = response.replace('$$NEXT$$', next);
-        response = response.replace('$$PREV$$', prev);
+        if(next == 2024) {
+            response = response.replace('$$NEXT$$', '');
+        } else {
+            response = response.replace('$$NEXT$$', next);
+        }
+        if(prev == 1993) {
+            response = response.replace('$$PREV$$', '');
+        } else {
+            response = response.replace('$$PREV$$', prev);
+        }
         let table_body = '';
         results[0].forEach((planet) => {
             let table_row = '<tr>';
