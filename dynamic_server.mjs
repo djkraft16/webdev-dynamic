@@ -50,40 +50,56 @@ app.get('/pl_name/:name', (req, res) => { // Planet Name
         let response = results[1].replace('$$CURRENT$$', current).replace('$$CURRENT$$', current);
 
         let id = results[0][0].pl_id;
-        let p3 = dbSelect('SELECT pl_id FROM Planets WHERE pl_name = ? AND pl_id > ? ORDER BY pl_id ASC LIMIT 3', [current, id]);
-        let p4 = dbSelect('SELECT pl_id FROM Planets WHERE pl_name = ? AND pl_id < ? ORDER BY pl_id DESC LIMIT 3', [current, id]);
+        let p3 = dbSelect('SELECT pl_id FROM Planets WHERE pl_name = ? AND pl_id > ? ORDER BY pl_id ASC', [current, id]);
+        let p4 = dbSelect('SELECT pl_id FROM Planets WHERE pl_name = ? AND pl_id < ? ORDER BY pl_id ASC', [current, id]);
         let next, prev;
-        Promise.all([p3, p4]).then((links) => {
-            console.log(links);
-            try {
-                next = links[0][0].pl_name;
-            } catch {
+        Promise.all([p3, p4]).then((ids) => {
+            let n_tmp = ids[0][ids[0].length-1];
+            let p_tmp = ids[0][0];
+            console.log(ids);
+            let p5, p6;
+            if(n_tmp != undefined) {
+                let next_id = n_tmp.pl_id + 1;
+                p5 = dbSelect('SELECT pl_name FROM Planets WHERE pl_id = ?', [next_id]);
+            } else {
                 next = current;
             }
-            try {
-                prev = links[1][0].pl_name;
-            } catch {
+            if(p_tmp != undefined) {
+                let prev_id = p_tmp.pl_id - 1;
+                p6 = dbSelect('SELECT pl_name FROM Planets WHERE pl_id = ?', [prev_id]);            } else {
                 prev = current;
             }
-            response = response.replace('$$NEXT$$', next);
-            response = response.replace('$$PREV$$', prev);
-            let table_body = '';
-            results[0].forEach((planet) => {
-                let table_row = '<tr>';
-    
-                table_row += '<td>' + planet.pl_name + '</td>\n';
-                table_row += '<td>' + planet.discoverymethod + '</td>\n';
-                table_row += '<td>' + planet.disc_year + '</td>\n';
-                table_row += '<td>' + planet.disc_facility + '</td>\n';
-                table_row += '<td>' + planet.pl_orbper + '</td>\n';
-                table_row += '<td>' + planet.pl_bmasse + '</td>\n';
-                table_row += '<td>' + planet.sy_dist + '</td>\n';
-    
-                table_row += '</tr>\n';
-                table_body += table_row;
+            Promise.all([p5, p6]).then((links) => {
+                if(n_tmp != undefined) {
+                    try {
+                        next = links[0][0].pl_name;
+                    } catch {}
+                }
+                if(p_tmp != undefined) {
+                    try {
+                        prev = links[0][1].pl_name;
+                    } catch {}
+                }
+                response = response.replace('$$NEXT$$', next);
+                response = response.replace('$$PREV$$', prev);
+                let table_body = '';
+                results[0].forEach((planet) => {
+                    let table_row = '<tr>';
+        
+                    table_row += '<td>' + planet.pl_name + '</td>\n';
+                    table_row += '<td>' + planet.discoverymethod + '</td>\n';
+                    table_row += '<td>' + planet.disc_year + '</td>\n';
+                    table_row += '<td>' + planet.disc_facility + '</td>\n';
+                    table_row += '<td>' + planet.pl_orbper + '</td>\n';
+                    table_row += '<td>' + planet.pl_bmasse + '</td>\n';
+                    table_row += '<td>' + planet.sy_dist + '</td>\n';
+        
+                    table_row += '</tr>\n';
+                    table_body += table_row;
+                });
+                response = response.replace('$$TABLE_BODY$$', table_body);
+                res.status(200).type('html').send(response);
             });
-            response = response.replace('$$TABLE_BODY$$', table_body);
-        res.status(200).type('html').send(response);
         })
     }).catch((error) => {
         res.status(404).type('txt').send('No data found for planet ' + name);
