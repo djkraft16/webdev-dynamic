@@ -77,6 +77,7 @@ app.get('/:filt/:val', (req, res) => {
                 table_body += table_row;
             });
             response = response.replace('$$TABLE_BODY$$', table_body);
+            response = response.replace('$$IMG$$', filter);
             res.status(200).type('html').send(response);
         }).catch((error) => {
             res.status(404).type('txt').send('No data found for ' + filter + ' ' + value);
