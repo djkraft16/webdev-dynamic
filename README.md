@@ -1,2 +1,2 @@
 # Web Dev - Dynamic Server
-Dynamic Server Starter Code for Web Development Course
+This is a interactive tabel of exoplanets that allows for filtering based on the data types specified in the table.
